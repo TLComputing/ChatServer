@@ -35,7 +35,7 @@ mysocket.on("connection", (socket) => {
   var ip = socket.handshake.address;
   console.log(ip);
   socket.on("sendMessage", (data) => {
-    console.log("data: " + data);
+    console.log("data00098765555444444: " + JSON.stringify(data, null, 2));
     data["id"] = socket.id;
     data["ip"] = ip;
     messages.push(data);

@@ -7,4 +7,8 @@ services:
     ports:
       - "3333:3333"
     volumes:
-      - .:/app
+      - ./src:/app/src
+      - ./package.json:/app/package.json
+      - ./yarn.lock:/app/yarn.lock
+      - ./tsconfig.json:/app/tsconfig.json
+    command: yarn run dev
