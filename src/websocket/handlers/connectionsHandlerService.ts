@@ -1,32 +1,36 @@
 import { Socket } from "socket.io";
 
 export default class ConnectionsHandlerService {
+	private messages: any[] = [];
 
-    private messages: any[] = [];
+	handleUserConnected(socket: Socket) {
+		console.log(`Usuário conectado: ${socket.id}`);
+		socket.on("sendMessage", (data) => {
+			var ip = socket.handshake.address;
 
-    handleUserConnected(socket: Socket) {
-        console.log(`Usuário conectado: ${socket.id}`);
-        socket.on("sendMessage", (data) => {
-            var ip = socket.handshake.address;
-            console.log(data);
-            data["id"] = socket.id;
-            data["ip"] = ip;
+			data["id"] = socket.id;
+			data["ip"] = ip;
 
-            this.messages.push(data);
+			// previne um tipo simples de XSS
+			const msg: string = data.message;
+			if (msg.indexOf("<script>") >= 0) {
+				console.log("XSS detected");
+				data["message"] = "<b style='color:red;'>XSS detected</b>";
+			}
 
-            // emite o evento "receivedMessage" e dispara a mensagem recebida para todos os demais clientes
-            // conectados
-            socket.broadcast.emit("receivedMessage", data);
-        });
-        
+			this.messages.push(data);
 
-        socket.on("disconnect", () =>  {
-            this.handleUserDisconnected(socket);
-        });
-    };
+			// emite o evento "receivedMessage" e dispara a mensagem recebida para todos os demais clientes
+			// conectados
+			socket.broadcast.emit("receivedMessage", data);
+		});
 
-    handleUserDisconnected(socket: Socket) {
-        console.log(`Usuário desconectado: ${socket.id}`);
-    };
+		socket.on("disconnect", () => {
+			this.handleUserDisconnected(socket);
+		});
+	}
 
-};
+	handleUserDisconnected(socket: Socket) {
+		console.log(`Usuário desconectado: ${socket.id}`);
+	}
+}
