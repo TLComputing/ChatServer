@@ -8,6 +8,6 @@ app.use(express.static("public"));
 app.set("views", "public");
 app.engine("html", require("ejs").renderFile);
 app.set("view engine", "html");
-
+app.use(express.json());
 
 export default app;

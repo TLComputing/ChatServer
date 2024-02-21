@@ -5,21 +5,22 @@ export default class ConnectionsHandlerService {
     private messages: any[] = [];
 
     handleUserConnected(socket: Socket) {
-        console.log(`Usuário conectado: ${socket.id}`);
+        
+        console.log(`Connected user: ${socket.id}`);
+        socket.emit("previousMessages", this.messages);
+
         socket.on("sendMessage", (data) => {
+
             var ip = socket.handshake.address;
-            console.log(data);
             data["id"] = socket.id;
             data["ip"] = ip;
-
+            console.log(data);
+            
             this.messages.push(data);
 
-            // emite o evento "receivedMessage" e dispara a mensagem recebida para todos os demais clientes
-            // conectados
             socket.broadcast.emit("receivedMessage", data);
         });
         
-
         socket.on("disconnect", () =>  {
             this.handleUserDisconnected(socket);
         });

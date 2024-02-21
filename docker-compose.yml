@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   websocket:
@@ -12,3 +12,17 @@ services:
       - ./yarn.lock:/app/yarn.lock
       - ./tsconfig.json:/app/tsconfig.json
     command: yarn run dev
+  
+  mongo:
+    image: mongo:7.0.5
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

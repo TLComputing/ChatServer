@@ -1,8 +1,10 @@
-FROM node:16
+FROM node:20.11.1
 
 WORKDIR /app
 
 COPY ./package.json /app
+
+COPY .env /app
 
 COPY ./yarn.lock /app
 
