@@ -22,6 +22,8 @@ export default class ConnectionsHandlerService {
 
 			// emite o evento "receivedMessage" e dispara a mensagem recebida para todos os demais clientes
 			// conectados
+
+			console.log(data);
 			socket.broadcast.emit("receivedMessage", data);
 		});
 

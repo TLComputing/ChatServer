@@ -20,11 +20,16 @@ class UserService {
       username,
       email,
       password: hashedPassword,
+      teste: '123',
     });
 
     await user.save();
 
     return user;
+  };
+
+  async getAll() {
+    return await User.find();
   };
 };
 

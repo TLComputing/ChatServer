@@ -5,6 +5,8 @@ dotenv.config();
 export default {
     port: process.env.PORT || 3333,
     database: {
-        url: process.env.DATABASE_URL || 'mongodb://rootuser:rootpass@mongo:27017/?authMechanism=DEFAULT'
-    }
+        url: process.env.DATABASE_URL || 'mongodb://rootuser:rootpass@mongo:27017/?authMechanism=DEFAULT',
+        
+    },
+    jwtSecret: process.env.JWT_SECRET
 };
